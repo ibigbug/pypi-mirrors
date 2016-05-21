@@ -51,7 +51,7 @@
             <thead><tr><th>Mirror</th><th>Location</th><th># of Packages</th><th>Last update</th><th>Age</th><th>Response Time (ms)*</th><th>Status</th></tr></thead>
             <tbody>
             {% for item in data %}
-                <tr><td><a target='_new' href='http://{{item.mirror}}'>{{item.mirror}}</a></td>
+                <tr><td><a target='_new' href='https://{{item.mirror}}'>{{item.mirror}}</a></td>
                 <td>{{item.location}}</td>
                 <td>{{item.num_packages}}</td>
                 <td>{{item.last_update}}</td>
@@ -94,12 +94,12 @@
     <div class="span4">
         <h3>Using a mirror</h3>
         <p><strong>Single Usage:</strong> <br/>
-          <pre>pip install -i http://&lt;mirror&gt;/simple &lt;package&gt;</pre>
+          <pre>pip install -i https://&lt;mirror&gt;/simple &lt;package&gt;</pre>
         <p><strong>Global settings:</strong> </br>
           Add <code>~/.pip/pip.conf</code> that includes:
           <pre>
 [global]
-index-url = http://&lt;mirror&gt;/simple</pre>
+index-url = https://&lt;mirror&gt;/simple</pre>
         </p>
     </div>
     <div class="span5"></div>
@@ -108,17 +108,17 @@ index-url = http://&lt;mirror&gt;/simple</pre>
     <div class="span9">
           Data also available in <a href='{{url_for('json_data')}}'>JSON</a> format <br/>
           Page last updated at {{date_now}} <br />
-          Originally built by: <a target='_new' href='http://twitter.com/kencochrane'>@KenCochrane</a> <br/>
-          Maintained by: <a target='_new' href='http://twitter.com/ibigbug'>@ibigbug</a> <br />
+          Originally built by: <a target='_new' href='https://twitter.com/kencochrane'>@KenCochrane</a> <br/>
+          Maintained by: <a target='_new' href='https://twitter.com/ibigbug'>@ibigbug</a> <br />
           Built with:
-          <a target='_new' href='https://github.com/ibigbug/pypi-mirrors'>pypi-mirrors</a>, <a target='_new' href='http://twitter.github.com/bootstrap/'>Bootstrap</a>, <a target='_new' href='http://omnipotent.net/jquery.sparkline'>jQuery Sparklines</a>, <a target='_new' href='http://redis.io'>Redis</a> and <a target='_new' href='http://flask.pocoo.org'>Flask</a>
+          <a target='_new' href='https://github.com/ibigbug/pypi-mirrors'>pypi-mirrors</a>, <a target='_new' href='https://twitter.github.com/bootstrap/'>Bootstrap</a>, <a target='_new' href='https://omnipotent.net/jquery.sparkline'>jQuery Sparklines</a>, <a target='_new' href='https://redis.io'>Redis</a> and <a target='_new' href='https://flask.pocoo.org'>Flask</a>
     </div>
     <div class='span3'><a target='_new' href='https://cloud.google.com/'><img style="height:20px;" src='static/img/powered-by-gce.svg' border='0'/></a>
-    <a target='_new' href='http://mailgun.net'><img src='static/img/mailgun_small.png' border='0'/></a></div>
+    <a target='_new' href='https://mailgun.net'><img src='static/img/mailgun_small.png' border='0'/></a></div>
  </div>
  <!-- /container -->
 </div>
-<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
 <script type="text/javascript" src="static/js/jquery.sparkline.min.js"></script>
 <script type="text/javascript">
     $(function() {
