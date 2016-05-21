@@ -92,3 +92,4 @@ TODO:
 -----
 - Create a setup.py and add to PyPI
 - Add better documentation
+- Make Docker Image
