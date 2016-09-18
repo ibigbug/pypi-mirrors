@@ -4,7 +4,7 @@ import json
 # mirrors listed here
 MIRRORS = [
     ('https', 'pypi.douban.com'),
-    ('http', 'pypi.gocept.com'),
+    ('https', 'pypi.fcio.net'),
     ('http', 'pypi.tuna.tsinghua.edu.cn'),
     ('http', 'mirror.picosecond.org/pypi'),
     ('http', 'mirrors.aliyun.com/pypi'),
