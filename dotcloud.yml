@@ -1,4 +1,0 @@
-mirror:
-    type: python
-cache:
-    type: redis

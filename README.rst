@@ -1,7 +1,7 @@
 pypi-mirrors
 ============
 
-Very simple tool that pings the PyPI mirrors and tells us when they were updated last. 
+Very simple tool that pings the PyPI mirrors and tells us when they were updated last.
 
 I threw this together very quickly as a proof of concept feel free to fork, and send pull requests.
 
@@ -19,46 +19,33 @@ In order to get the IP address geolocation lookup, you need to sign up for an ac
 
 Email & Twitter
 ~~~~~~~~~~~~~~~
-
-To get the twitter and email notifications to work correctly you need to create an environment.json file in ``/tmp``  with the variables and values shown below.  replace <value> with the real values.
-
-``/tmp/environment.json``::
-
-    {
-    "IPLOC_API_KEY": "<value>",
-    "TWITTER_CONSUMER_KEY" : "<value>",
-    "TWITTER_CONSUMER_SECRET" : "<value>",
-    "TWITTER_ACCESS_KEY" : "<value>",
-    "TWITTER_ACCESS_SECRET" : "<value>",
-    "EMAIL_HOST" : "<value>",
-    "EMAIL_PORT" : "<value>",
-    "EMAIL_USER" : "<value>",
-    "EMAIL_PASSWORD" : "<value>",
-    "EMAIL_FROM" : "<value>",
-    "EMAIL_TO" : "<value>",
-    "EMAIL_BCC" : "<value>",
-    "EMAIL_TO_ADMIN": "<value>"
-    }
+Pass the corresponding environment variables to enable email & twitter notifications.
 
 
-For installing the API Key on dotCloud you need to run the following command. replace <value> with the real values.
+Environment variables
+~~~~~~~~~~~~~~~~~~~~~
 
 env variables::
 
-   dotcloud var set pypimirrors \
-       'IPLOC_API_KEY=<value>' \
-       'TWITTER_CONSUMER_KEY=<value>' \
-       'TWITTER_CONSUMER_SECRET=<value>' \
-       'TWITTER_ACCESS_KEY=<value>' \
-       'TWITTER_ACCESS_SECRET=<value>' \
-       'EMAIL_HOST=<value>' \
-       'EMAIL_PORT=<value>' \
-       'EMAIL_USER=<value>' \
-       'EMAIL_PASSWORD=<value>' \
-       'EMAIL_FROM=<value>' \
-       'EMAIL_TO=<value>' \
-       'EMAIL_BCC=<value>' \
-       'EMAIL_TO_ADMIN=<value>'
+   docker run \
+       -e 'CACHE_REDIS_HOST=localhost' \
+       -e 'CACHE_REDIS_PORT=6379' \
+       -e 'IPLOC_API_KEY=<value>' \
+       -e 'TWITTER_CONSUMER_KEY=<value>' \
+       -e 'TWITTER_CONSUMER_SECRET=<value>' \
+       -e 'TWITTER_ACCESS_KEY=<value>' \
+       -e 'TWITTER_ACCESS_SECRET=<value>' \
+       -e 'EMAIL_HOST=<value>' \
+       -e 'EMAIL_PORT=<value>' \
+       -e 'EMAIL_USER=<value>' \
+       -e 'EMAIL_PASSWORD=<value>' \
+       -e 'EMAIL_FROM=<value>' \
+       -e 'EMAIL_TO=<value>' \
+       -e 'EMAIL_BCC=<value>' \
+       -e 'EMAIL_TO_ADMIN=<value>'\
+       -v /tmp/:/tmp/ \
+       ibigbug/pypi-mirrors \
+       uwsgi  -w wsgi -s /tmp/uwsgi.sock --logto=/var/log/uwsgi/uwsgi.log --chdir=/src/ --chmod-socket=666
 
 
 How it works
@@ -72,18 +59,18 @@ http://www.pypi-mirrors.org
 
 How to help
 -----------
-Pick one of the things on the TODO list and implement it and send a pull request. 
+Pick one of the things on the TODO list and implement it and send a pull request.
 
 Running locally
 ---------------
 Make sure redis is running
 
 1. Collecting Data::
-    
+
     $ python pypi_mirrors.py
 
 2. Running web server::
-    
+
     $ python app.py
     # connect to http://localhost:5000 in browser
 

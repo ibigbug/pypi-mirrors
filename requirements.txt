@@ -4,3 +4,4 @@ requests
 lxml
 flask
 tweepy
+uwsgi
