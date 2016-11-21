@@ -5,9 +5,10 @@ from config import load_config, EMAIL_OVERRIDE
 
 CONFIG = load_config()
 
+
 def prepare_twitter_message(status):
     """ shrink to the right size and add link to site. """
-    link = "http://www.pypi-mirrors.org"
+    link = "https://www.pypi-mirrors.org"
     link_len = len(link) + 4
     message_len = 140 - link_len
     status_new = status[:message_len]
@@ -20,11 +21,11 @@ def prepare_twitter_message(status):
 def update_twitter_status(status):
     """ update the twitter account's status """
 
-    consumer_key=CONFIG.get('twitter_consumer_key')
-    consumer_secret=CONFIG.get('twitter_consumer_secret')
+    consumer_key = CONFIG.get('twitter_consumer_key')
+    consumer_secret = CONFIG.get('twitter_consumer_secret')
 
-    access_token=CONFIG.get('twitter_access_key')
-    access_token_secret=CONFIG.get('twitter_access_secret')
+    access_token = CONFIG.get('twitter_access_key')
+    access_token_secret = CONFIG.get('twitter_access_secret')
 
     message = prepare_twitter_message(status)
 
@@ -40,14 +41,14 @@ def send_warning_email(message):
     email_from = CONFIG.get('email_from')
     email_template = '''Subject: [pypi-mirrors] Mirror is out of Date Notice
 
-    This is an automated email from http://www.pypi-mirrors.org to let you
+    This is an automated email from https://www.pypi-mirrors.org to let you
     know that the following mirrors are out of date.
 
     {message}
 
     --
-    This automated message is sent to you by http://www.pypi-mirrors.org If you no
-    longer want to receive these emails, please contact Ken Cochrane (@KenCochrane) on twitter
+    This automated message is sent to you by https://www.pypi-mirrors.org If you no
+    longer want to receive these emails, please contact Yuwei Ba(@ibigbug) on twitter
     or reply to this email.
     '''
     email_body = email_template.format(message=message)
@@ -61,13 +62,13 @@ def send_status_email(message):
     email_from = CONFIG.get('email_from')
     email_template = '''Subject: [pypi-mirrors] Mirrors are all up to date
 
-    This is an automated email from http://www.pypi-mirrors.org to let you
+    This is an automated email from https://www.pypi-mirrors.org to let you
     know that the following mirrors are all up to date.
 
     {message}
     --
-    This automated message is sent to you by http://www.pypi-mirrors.org If you no
-    longer want to receive these emails, please contact Ken Cochrane (@KenCochrane) on twitter
+    This automated message is sent to you by https://www.pypi-mirrors.org If you no
+    longer want to receive these emails, please contact Yuwei Ba(@ibigbug) on twitter
     or reply to this email.
     '''
 
@@ -96,5 +97,3 @@ def send_email(email_body, email_to, email_from):
     smtp.login(email_user, email_password)
     smtp.sendmail(email_from, [email, email_bcc], email_body)
     smtp.quit()
-
-    
