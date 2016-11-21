@@ -5,6 +5,11 @@ Very simple tool that pings the PyPI mirrors and tells us when they were updated
 
 I threw this together very quickly as a proof of concept feel free to fork, and send pull requests.
 
+Docker Image
+------------
+
+https://hub.docker.com/r/ibigbug/pypi-mirrors/
+
 Config
 ------
 
@@ -77,6 +82,6 @@ Make sure redis is running
 
 TODO:
 -----
-- Create a setup.py and add to PyPI
-- Add better documentation
-- Make Docker Image
+- [ ] Create a setup.py and add to PyPI
+- [ ] Add better documentation
+- [x] Make Docker Image
