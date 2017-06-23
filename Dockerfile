@@ -16,3 +16,7 @@ RUN crontab /etc/cron.d/cron-me
 ADD ./ /src/
 
 WORKDIR /src/
+
+ADD ./scripts/entrypoint /
+
+ENTRYPOINT ["/entrypoint"]
