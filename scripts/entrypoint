@@ -3,4 +3,4 @@
 service cron start
 /usr/local/bin/python /src/pypi_mirrors.py >> /var/log/pypi-mirrors.log
 
-/usr/local/bin/uwsgi @$
+/usr/local/bin/uwsgi $@
