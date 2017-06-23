@@ -1,4 +1,4 @@
 MAILTO=""
-*/6 * * * * /root/app/pypi-mirrors/venv/bin/python /root/app/pypi-mirrors/pypi_mirrors.py >> /var/log/pypi-mirrors.log
-24 12 * * * /root/app/pypi-mirrors/venv/bin/python /root/app/pypi-mirrors/daily.py >> /var/log/cron-daily.log
-5   * * * * killall -q --older-than 1h '/root/app/pypi-mirrors/venv/bin/python'
+*/6 * * * * /usr/local/bin/python /src/pypi_mirrors.py >> /var/log/pypi-mirrors.log
+24 12 * * * /usr/local/bin/python /src/daily.py >> /var/log/cron-daily.log
+5   * * * * killall -q --older-than 1h '/usr/local/bin/python'
