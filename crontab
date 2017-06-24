@@ -1,4 +1,4 @@
 MAILTO=""
-*/6 * * * * /usr/local/bin/python /src/pypi_mirrors.py >> /var/log/pypi-mirrors.log
+*/6 * * * * /usr/local/bin/python /src/pypi_mirrors.py && echo "`date` success" || echo "`date` fail" >> /var/log/pypi-mirrors.log
 24 12 * * * /usr/local/bin/python /src/daily.py >> /var/log/cron-daily.log
 5   * * * * killall -q --older-than 1h '/usr/local/bin/python'
