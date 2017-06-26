@@ -19,4 +19,6 @@ WORKDIR /src/
 
 ADD ./scripts/entrypoint /
 
+RUN uwsgi --build-plugin https://github.com/unbit/uwsgi-influxdb
+
 ENTRYPOINT ["/entrypoint"]
