@@ -1,6 +1,8 @@
 #!/bin/sh
 
 service cron start
-/usr/local/bin/python /src/pypi_mirrors.py >> /var/log/pypi-mirrors.log
+/usr/local/bin/python /src/pypi_mirrors.py & >> /var/log/pypi-mirrors.log
+
+printenv > /env.sh
 
 /usr/local/bin/uwsgi $@
