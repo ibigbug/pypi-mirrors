@@ -33,10 +33,22 @@ Updated for PEP 449
 http://www.python.org/dev/peps/pep-0449/
 
 """
+try:
+    import gevent
+    import gevent.monkey;
+    gevent.monkey.patch_socket()
+    gevent.monkey.patch_ssl()
+    from gevent.pool import Pool
+    pool = Pool(10)
+except ImportError:
+    from multiprocessing.dummy import Pool
+    pool = Pool(10)
+
 import datetime
 import urllib2
 import time
 import operator
+
 
 MIRROR_URL_FORMAT = "{0}://{1}/last-modified"
 MASTER_URL_FORMAT = "https://{0}/daytime"
@@ -45,6 +57,19 @@ MASTER_SERVER = "pypi.python.org"
 STATUSES = {'GREEN':'Green',
             'YELLOW':'Yellow',
             'RED':'Red'}
+
+
+
+def sort_results_by_age(results):
+    def compare(x, y):
+        if x[1] is None and y[1] is None:
+            return 0
+        if x[1] is None:
+            return 1
+        if y[1] is None:
+            return -1
+        return cmp(x[1], y[1])
+    return sorted(results, cmp=compare)
 
 
 def ping_mirror(mirror_url):
@@ -56,7 +81,7 @@ def ping_mirror(mirror_url):
         stop = time.time()
         response_time = round((stop - start) * 1000, 2)
         return res.read().strip(), response_time
-    except Exception:
+    except Exception as e:
         return None, None
 
 
@@ -123,7 +148,8 @@ def ping_master_pypi_server(master_url_format=MASTER_URL_FORMAT):
 
 def mirror_statuses(mirror_url_format=MIRROR_URL_FORMAT,
                     mirrors=None,
-                    ping_master_mirror=True):
+                    ping_master_mirror=True,
+                    sort_by_age=True):
     """ get the data we need from the mirrors and return a list of 
     dictionaries with information about each mirror
 
@@ -136,16 +162,22 @@ def mirror_statuses(mirror_url_format=MIRROR_URL_FORMAT,
     ``ping_master_mirror`` - Do you want to include the status of the master
     server in the results. Defaults to True.
 
+    ``sort_by_age`` - Do you want to sort the results by age, default to True.
+
     """
     if not mirrors:
         return []
 
     # scan the mirrors and collect data
     ping_results = []
-    for protocol, ml in mirrors:
-        m_url = mirror_url_format.format(protocol, ml)
-        res, res_time = ping_mirror(m_url)
-        ping_results.append((ml, res, res_time))
+
+    urls = [mirror_url_format.format(protocol, ml) for protocol, ml in mirrors]
+    results = pool.map(ping_mirror, urls)
+    pool.join()
+    ping_results = [(mirrors[i][1], results[i][0], results[i][1]) for i in range(len(urls))]
+
+    if sort_by_age:
+        ping_results = sort_results_by_age(ping_results)
 
     if ping_master_mirror:
         # pypi.python.org is the master server treat it differently
@@ -160,7 +192,9 @@ def mirror_statuses(mirror_url_format=MIRROR_URL_FORMAT,
             time_diff = abs(now - last_update)
             status = mirror_status_desc(time_diff)
             time_diff_human = humanize_date_difference(now, last_update)
-            results.append({'mirror': ml,
+            results.append({
+                'mirror': ml,
+                'scheme': protocol,
                 'last_update': last_update,
                 'time_now': now,
                 'time_diff': time_diff,
@@ -169,7 +203,9 @@ def mirror_statuses(mirror_url_format=MIRROR_URL_FORMAT,
                 'status': status}
             )
         else:
-            results.append({'mirror': ml,
+            results.append({
+                'mirror': ml,
+                'scheme': protocol,
                 'last_update': "Unavailable",
                 'time_now': now,
                 'time_diff_human':  "Unavailable",
@@ -177,6 +213,7 @@ def mirror_statuses(mirror_url_format=MIRROR_URL_FORMAT,
                 'response_time':  "Unavailable",
                 'status': 'Unavailable'}
             )
+
     return results
 
 

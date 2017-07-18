@@ -21,9 +21,9 @@ def get_connection():
                           db=CONFIG.get('db'),
                           password=CONFIG.get('password'))
 
-def find_number_of_packages(mirror):
+def find_number_of_packages(mirror, scheme='http'):
     """ Find the number of packages in a mirror """
-    html = lxml.html.fromstring(requests.get("http://{0}/simple/".format(mirror)).content)
+    html = lxml.html.fromstring(requests.get("{0}://{1}/simple/".format(scheme, mirror)).content)
     return len(html.xpath("//a"))
 
 def ping_ip2loc(ip):
