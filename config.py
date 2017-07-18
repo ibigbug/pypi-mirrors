@@ -13,6 +13,7 @@ MIRRORS = [
     ('http', 'mirrors-ru.go-parts.com/python'),
     ('http', 'mirrors-au.go-parts.com/python'),
     ('https', 'pypi.mirrors.ustc.edu.cn'),
+    ('https', 'mirror-ord.pypi.io'),
 ]
 
 EMAIL_OVERRIDE = None  # None or "blah@example.com"
