@@ -33,10 +33,22 @@ Updated for PEP 449
 http://www.python.org/dev/peps/pep-0449/
 
 """
+try:
+    import gevent
+    import gevent.monkey;
+    gevent.monkey.patch_socket()
+    gevent.monkey.patch_ssl()
+    from gevent.pool import Pool
+    pool = Pool(10)
+except ImportError:
+    from multiprocessing.dummy import Pool
+    pool = Pool(10)
+
 import datetime
 import urllib2
 import time
 import operator
+
 
 MIRROR_URL_FORMAT = "{0}://{1}/last-modified"
 MASTER_URL_FORMAT = "https://{0}/daytime"
@@ -57,7 +69,6 @@ def sort_results_by_age(results):
         if y[1] is None:
             return -1
         return cmp(x[1], y[1])
-    print sorted(results, cmp=compare)
     return sorted(results, cmp=compare)
 
 
@@ -70,7 +81,7 @@ def ping_mirror(mirror_url):
         stop = time.time()
         response_time = round((stop - start) * 1000, 2)
         return res.read().strip(), response_time
-    except Exception:
+    except Exception as e:
         return None, None
 
 
@@ -159,10 +170,12 @@ def mirror_statuses(mirror_url_format=MIRROR_URL_FORMAT,
 
     # scan the mirrors and collect data
     ping_results = []
-    for protocol, ml in mirrors:
-        m_url = mirror_url_format.format(protocol, ml)
-        res, res_time = ping_mirror(m_url)
-        ping_results.append((ml, res, res_time))
+
+    urls = [mirror_url_format.format(protocol, ml) for protocol, ml in mirrors]
+    results = pool.map(ping_mirror, urls)
+    pool.join()
+    ping_results = [(mirrors[i][1], results[i][0], results[i][1]) for i in range(len(urls))]
+
     if sort_by_age:
         ping_results = sort_results_by_age(ping_results)
 
