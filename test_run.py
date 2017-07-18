@@ -7,6 +7,7 @@ from utils import (find_number_of_packages)
 
 from config import MIRRORS
 
+
 def process_results(results):
     """ process the results and gather data """
 
@@ -15,9 +16,11 @@ def process_results(results):
         mirror = d.get('mirror')
         status = d.get('status')
         d['location'] = "n/a"
-        if  status != 'Unavailable':
-            resp_list = ["1","2","3","4","5","6","7","8","9","10"] # faked out for test
-            age_list = ["1","2","3","4","5","6","7","8","9","10"] # faked out for test
+        if status != 'Unavailable':
+            resp_list = ["1", "2", "3", "4", "5", "6",
+                         "7", "8", "9", "10"]  # faked out for test
+            age_list = ["1", "2", "3", "4", "5", "6",
+                        "7", "8", "9", "10"]  # faked out for test
             d['num_packages'] = find_number_of_packages(mirror)
             d['resp_list'] = ",".join(resp_list)
             d['age_list'] = ",".join(age_list)
@@ -27,6 +30,7 @@ def process_results(results):
 
 def url_for(something):
     return something
+
 
 def run():
     """ run everything """
@@ -41,6 +45,7 @@ def run():
     template = env.get_template('index.html')
     context = {'data': data, 'date_now': time_now}
     print template.render(**context)
+
 
 if __name__ == '__main__':
     run()

@@ -44,4 +44,5 @@ def load_config():
         'email_to': env.get('EMAIL_TO', None),
         'email_bcc': env.get('EMAIL_BCC', None),
         'email_to_admin': env.get('EMAIL_TO_ADMIN', None),
+        'sentry_dsn': env.get('SENTRY_DSN', None),
     }

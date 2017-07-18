@@ -48,9 +48,9 @@ env variables::
        -e 'EMAIL_TO=<value>' \
        -e 'EMAIL_BCC=<value>' \
        -e 'EMAIL_TO_ADMIN=<value>'\
-       -v /tmp/:/tmp/ \
+       -e 'SENTRY_DSN=<value>'\
        ibigbug/pypi-mirrors \
-       uwsgi  -w wsgi -s /tmp/uwsgi.sock --logto=/var/log/uwsgi/uwsgi.log --chdir=/src/ --chmod-socket=666
+       uwsgi  -w wsgi --logto=/var/log/uwsgi/uwsgi.log --chdir=/src/ --chmod-socket=666
 
 
 How it works
