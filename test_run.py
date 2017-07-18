@@ -21,7 +21,7 @@ def process_results(results):
                          "7", "8", "9", "10"]  # faked out for test
             age_list = ["1", "2", "3", "4", "5", "6",
                         "7", "8", "9", "10"]  # faked out for test
-            d['num_packages'] = find_number_of_packages(mirror)
+            d['num_packages'] = find_number_of_packages(mirror, d['scheme'])
             d['resp_list'] = ",".join(resp_list)
             d['age_list'] = ",".join(age_list)
         new_results.append(d)
