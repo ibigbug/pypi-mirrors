@@ -26,7 +26,7 @@ def process_results(results):
             conn.rpush(cache_key('AGE', mirror), age)
             resp_list = conn.lrange(cache_key('RESPTIME', mirror), -60, -1)
             age_list = conn.lrange(cache_key('AGE', mirror), -60, -1)
-            d['num_packages'] = find_number_of_packages(mirror)
+            d['num_packages'] = find_number_of_packages(mirror, d['scheme'])
             d['resp_list'] = ",".join(resp_list)
             d['age_list'] = ",".join(age_list)
         new_results.append(d)

@@ -160,7 +160,9 @@ def mirror_statuses(mirror_url_format=MIRROR_URL_FORMAT,
             time_diff = abs(now - last_update)
             status = mirror_status_desc(time_diff)
             time_diff_human = humanize_date_difference(now, last_update)
-            results.append({'mirror': ml,
+            results.append({
+                'mirror': ml,
+                'scheme': protocol,
                 'last_update': last_update,
                 'time_now': now,
                 'time_diff': time_diff,
@@ -169,7 +171,9 @@ def mirror_statuses(mirror_url_format=MIRROR_URL_FORMAT,
                 'status': status}
             )
         else:
-            results.append({'mirror': ml,
+            results.append({
+                'mirror': ml,
+                'scheme': protocol,
                 'last_update': "Unavailable",
                 'time_now': now,
                 'time_diff_human':  "Unavailable",
