@@ -3,6 +3,7 @@ import json
 
 # mirrors listed here
 MIRRORS = [
+    ('https', 'mirror-ord.pypi.io'),
     ('https', 'pypi.doubanio.com'),
     ('https', 'pypi.fcio.net'),
     ('https', 'pypi.tuna.tsinghua.edu.cn'),
@@ -13,7 +14,6 @@ MIRRORS = [
     ('http', 'mirrors-ru.go-parts.com/python'),
     ('http', 'mirrors-au.go-parts.com/python'),
     ('https', 'pypi.mirrors.ustc.edu.cn'),
-    ('https', 'mirror-ord.pypi.io'),
 ]
 
 EMAIL_OVERRIDE = None  # None or "blah@example.com"
