@@ -172,6 +172,8 @@ def mirror_statuses(mirror_url_format=MIRROR_URL_FORMAT,
 
     urls = [mirror_url_format.format(protocol, ml) for protocol, ml in mirrors]
     results = pool.map(ping_mirror, urls)
+    if hasattr(pool, 'close'):
+        pool.close()
     pool.join()
     ping_results = [(mirrors[i][1], results[i][0], results[i][1])
                     for i in range(len(urls))]
