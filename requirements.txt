@@ -5,3 +5,4 @@ lxml
 flask
 tweepy
 uwsgi
+raven==6.1.0
