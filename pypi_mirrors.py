@@ -9,6 +9,7 @@ from utils import (cache_key, location_name, get_total_seconds,
 
 from config import MIRRORS
 
+
 def process_results(results):
     """ process the results and gather data """
 
@@ -19,10 +20,10 @@ def process_results(results):
         status = d.get('status')
         location = get_location_for_mirror(mirror)
         d['location'] = location_name(location)
-        if  status != 'Unavailable':
+        if status != 'Unavailable':
             resp_time = d.get('response_time')
             age = get_total_seconds(d.get('time_diff'))
-            conn.rpush(cache_key('RESPTIME', mirror), resp_time )
+            conn.rpush(cache_key('RESPTIME', mirror), resp_time)
             conn.rpush(cache_key('AGE', mirror), age)
             resp_list = conn.lrange(cache_key('RESPTIME', mirror), -60, -1)
             age_list = conn.lrange(cache_key('AGE', mirror), -60, -1)
@@ -31,6 +32,7 @@ def process_results(results):
             d['age_list'] = ",".join(age_list)
         new_results.append(d)
     return new_results
+
 
 def json_results(data):
     results = {}
@@ -42,6 +44,7 @@ def json_results(data):
             'last_updated': mirror.get('time_diff_human', 'n/a'),
         }
     return json.dumps(results)
+
 
 def run():
     """ run everything """
@@ -55,6 +58,7 @@ def run():
     store_json_data(json_data)
     store_page_data(data, time_now)
     print "finished", time.time()
+
 
 if __name__ == '__main__':
     run()

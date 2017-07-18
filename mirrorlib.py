@@ -24,7 +24,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-""" This is a simple library that you can use to find out the status of 
+""" This is a simple library that you can use to find out the status of
 PyPI mirrors. It is based on the information that is found at
 http://www.python.org/dev/peps/pep-0381/ and
 http://pypi.python.org/mirrors
@@ -35,7 +35,7 @@ http://www.python.org/dev/peps/pep-0449/
 """
 try:
     import gevent
-    import gevent.monkey;
+    import gevent.monkey
     gevent.monkey.patch_socket()
     gevent.monkey.patch_ssl()
     from gevent.pool import Pool
@@ -54,10 +54,9 @@ MIRROR_URL_FORMAT = "{0}://{1}/last-modified"
 MASTER_URL_FORMAT = "https://{0}/daytime"
 MASTER_SERVER = "pypi.python.org"
 
-STATUSES = {'GREEN':'Green',
-            'YELLOW':'Yellow',
-            'RED':'Red'}
-
+STATUSES = {'GREEN': 'Green',
+            'YELLOW': 'Yellow',
+            'RED': 'Red'}
 
 
 def sort_results_by_age(results):
@@ -81,7 +80,7 @@ def ping_mirror(mirror_url):
         stop = time.time()
         response_time = round((stop - start) * 1000, 2)
         return res.read().strip(), response_time
-    except Exception as e:
+    except Exception:
         return None, None
 
 
@@ -150,7 +149,7 @@ def mirror_statuses(mirror_url_format=MIRROR_URL_FORMAT,
                     mirrors=None,
                     ping_master_mirror=True,
                     sort_by_age=True):
-    """ get the data we need from the mirrors and return a list of 
+    """ get the data we need from the mirrors and return a list of
     dictionaries with information about each mirror
 
     ``mirror_url_format`` - Change the url format from the standard one
@@ -174,7 +173,8 @@ def mirror_statuses(mirror_url_format=MIRROR_URL_FORMAT,
     urls = [mirror_url_format.format(protocol, ml) for protocol, ml in mirrors]
     results = pool.map(ping_mirror, urls)
     pool.join()
-    ping_results = [(mirrors[i][1], results[i][0], results[i][1]) for i in range(len(urls))]
+    ping_results = [(mirrors[i][1], results[i][0], results[i][1])
+                    for i in range(len(urls))]
 
     if sort_by_age:
         ping_results = sort_results_by_age(ping_results)
@@ -238,7 +238,8 @@ def find_out_of_date_mirrors(mirrors=None):
 def __find_mirror_sort(sort_field, mirrors=None, reverse=False):
     """ Find the first mirror that is sorted by sort_field """
     results = mirror_statuses(mirrors=mirrors, ping_master_mirror=False)
-    new_list = sorted(results, key=operator.itemgetter(sort_field), reverse=reverse)
+    new_list = sorted(results, key=operator.itemgetter(
+        sort_field), reverse=reverse)
     return new_list[0]
 
 

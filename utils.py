@@ -10,21 +10,27 @@ except ImportError:
     import pickle
 
 from config import load_config
-from iploc import get_city
+from services.iploc import get_city
+
+from services.errors import sentry
 
 CONFIG = load_config()
+
 
 def get_connection():
     """ Get the connection to Redis"""
     return redis.StrictRedis(host=CONFIG.get('host'),
-                          port=int(CONFIG.get('port')),
-                          db=CONFIG.get('db'),
-                          password=CONFIG.get('password'))
+                             port=int(CONFIG.get('port')),
+                             db=CONFIG.get('db'),
+                             password=CONFIG.get('password'))
+
 
 def find_number_of_packages(mirror, scheme='http'):
     """ Find the number of packages in a mirror """
-    html = lxml.html.fromstring(requests.get("{0}://{1}/simple/".format(scheme, mirror)).content)
+    html = lxml.html.fromstring(requests.get(
+        "{0}://{1}/simple/".format(scheme, mirror)).content)
     return len(html.xpath("//a"))
+
 
 def ping_ip2loc(ip):
     """ get the location info for the ip
@@ -38,6 +44,7 @@ def ping_ip2loc(ip):
     if not api_key:
         return None
     return get_city(api_key, ip)
+
 
 def get_location_for_mirror(mirror):
     """ get the location for the mirror """
@@ -53,15 +60,17 @@ def get_location_for_mirror(mirror):
     except Exception as exc:
         # if error, just default to mirror that works most of the time
         print("Error getting location for {0} \n {1}".format(mirror, exc))
+        sentry.captureException()
         hostname = mirror
 
     ip = socket.gethostbyname(hostname)
     location = ping_ip2loc(ip)
     if location:
-        conn.setex(loc_key, 86400, pickle.dumps(location)) # 1 day cache
+        conn.setex(loc_key, 86400, pickle.dumps(location))  # 1 day cache
         return location
     # if we get here, no good, return None
     return None
+
 
 def store_page_data(data, time_now):
     """ Store the data in the cache for later use."""
@@ -69,18 +78,21 @@ def store_page_data(data, time_now):
     context = {'data': data, 'date_now': time_now}
     conn.set('PAGE_DATA', pickle.dumps(context))
 
+
 def get_page_data():
     """ Get the page data from the cache """
     conn = get_connection()
     data = conn.get('PAGE_DATA')
     if data:
-      return pickle.loads(data)
+        return pickle.loads(data)
     return {}
+
 
 def store_json_data(data):
     """ Store the data in the cache for later use."""
     conn = get_connection()
     conn.set('JSON_DATA', data)
+
 
 def get_json_data():
     """ Get the json data from the cache """
@@ -90,8 +102,9 @@ def get_json_data():
         return {}
     return data
 
+
 def get_total_seconds(delta):
-    """ need this since timedelta.total_seconds() 
+    """ need this since timedelta.total_seconds()
     isn't available in python 2.6.x"""
     if delta:
         return delta.seconds + (delta.days * 24 * 3600)
