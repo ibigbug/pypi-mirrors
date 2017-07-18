@@ -47,6 +47,20 @@ STATUSES = {'GREEN':'Green',
             'RED':'Red'}
 
 
+
+def sort_results_by_age(results):
+    def compare(x, y):
+        if x[1] is None and y[1] is None:
+            return 0
+        if x[1] is None:
+            return 1
+        if y[1] is None:
+            return -1
+        return cmp(x[1], y[1])
+    print sorted(results, cmp=compare)
+    return sorted(results, cmp=compare)
+
+
 def ping_mirror(mirror_url):
     """ Given a mirror_url it will ping it and return the contents and
         the response time """
@@ -123,7 +137,8 @@ def ping_master_pypi_server(master_url_format=MASTER_URL_FORMAT):
 
 def mirror_statuses(mirror_url_format=MIRROR_URL_FORMAT,
                     mirrors=None,
-                    ping_master_mirror=True):
+                    ping_master_mirror=True,
+                    sort_by_age=True):
     """ get the data we need from the mirrors and return a list of 
     dictionaries with information about each mirror
 
@@ -136,6 +151,8 @@ def mirror_statuses(mirror_url_format=MIRROR_URL_FORMAT,
     ``ping_master_mirror`` - Do you want to include the status of the master
     server in the results. Defaults to True.
 
+    ``sort_by_age`` - Do you want to sort the results by age, default to True.
+
     """
     if not mirrors:
         return []
@@ -146,6 +163,8 @@ def mirror_statuses(mirror_url_format=MIRROR_URL_FORMAT,
         m_url = mirror_url_format.format(protocol, ml)
         res, res_time = ping_mirror(m_url)
         ping_results.append((ml, res, res_time))
+    if sort_by_age:
+        ping_results = sort_results_by_age(ping_results)
 
     if ping_master_mirror:
         # pypi.python.org is the master server treat it differently
@@ -181,6 +200,7 @@ def mirror_statuses(mirror_url_format=MIRROR_URL_FORMAT,
                 'response_time':  "Unavailable",
                 'status': 'Unavailable'}
             )
+
     return results
 
 
