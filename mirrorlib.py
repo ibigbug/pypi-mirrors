@@ -170,6 +170,8 @@ def mirror_statuses(mirror_url_format=MIRROR_URL_FORMAT,
     # scan the mirrors and collect data
     ping_results = []
 
+    p = {m[1]: m[0] for m in mirrors}
+
     urls = [mirror_url_format.format(protocol, ml) for protocol, ml in mirrors]
     results = pool.map(ping_mirror, urls)
     if hasattr(pool, 'close'):
@@ -196,7 +198,7 @@ def mirror_statuses(mirror_url_format=MIRROR_URL_FORMAT,
             time_diff_human = humanize_date_difference(now, last_update)
             results.append({
                 'mirror': ml,
-                'scheme': protocol,
+                'scheme': p.get(ml, 'https'),
                 'last_update': last_update,
                 'time_now': now,
                 'time_diff': time_diff,
@@ -207,7 +209,7 @@ def mirror_statuses(mirror_url_format=MIRROR_URL_FORMAT,
         else:
             results.append({
                 'mirror': ml,
-                'scheme': protocol,
+                'scheme': p.get(ml, 'https'),
                 'last_update': "Unavailable",
                 'time_now': now,
                 'time_diff_human':  "Unavailable",
