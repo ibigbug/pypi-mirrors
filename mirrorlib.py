@@ -67,7 +67,7 @@ def sort_results_by_age(results):
             return 1
         if y[1] is None:
             return -1
-        return cmp(x[1], y[1])
+        return cmp(y[1], x[1])
     return sorted(results, cmp=compare)
 
 
