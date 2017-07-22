@@ -7,3 +7,4 @@ tweepy
 uwsgi
 raven==6.1.0
 gevent
+prometheus-client==0.0.20
