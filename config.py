@@ -1,5 +1,8 @@
 import os
+import sys
 import json
+
+PY2 = sys.version_info < (3, 0)
 
 # mirrors listed here
 MIRRORS = [

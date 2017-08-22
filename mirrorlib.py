@@ -40,14 +40,24 @@ try:
     gevent.monkey.patch_ssl()
     from gevent.pool import Pool
     pool = Pool(10)
+    print('using gevent pool')
 except ImportError:
     from multiprocessing.dummy import Pool
     pool = Pool(10)
+    print('using multiprocessing pool')
+
 
 import datetime
-import urllib2
 import time
 import operator
+
+from utils import cmp_to_key
+
+from config import PY2
+if PY2:
+    from urllib2 import urlopen
+else:
+    from urllib.request import urlopen
 
 
 MIRROR_URL_FORMAT = "{0}://{1}/last-modified"
@@ -67,8 +77,8 @@ def sort_results_by_age(results):
             return 1
         if y[1] is None:
             return -1
-        return cmp(y[1], x[1])
-    return sorted(results, cmp=compare)
+        return (y[1] > x[1]) - (y[1] < x[1])
+    return sorted(results, key=cmp_to_key(compare))
 
 
 def ping_mirror(mirror_url):
@@ -76,7 +86,7 @@ def ping_mirror(mirror_url):
         the response time """
     try:
         start = time.time()
-        res = urllib2.urlopen(mirror_url)
+        res = urlopen(mirror_url)
         stop = time.time()
         response_time = round((stop - start) * 1000, 2)
         return res.read().strip(), response_time
@@ -93,7 +103,10 @@ def parse_date(date_str):
     else:
         # Canonical ISO-8601 format (compliant with PEP 381)
         date_fmt = '%Y-%m-%dT%H:%M:%S'
-    return datetime.datetime.strptime(date_str, date_fmt)
+    try:
+        return datetime.datetime.strptime(date_str, date_fmt)
+    except:
+        return datetime.datetime.strptime(date_str.decode('utf-8'), date_fmt)
 
 
 def humanize_date_difference(now, other_date=None, offset=None, sign="ago"):

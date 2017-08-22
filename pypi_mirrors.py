@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-import time
 import json
 from mirrorlib import mirror_statuses
 
@@ -48,7 +47,6 @@ def json_results(data):
 
 def run():
     """ run everything """
-    print "starting", time.time()
     results = mirror_statuses(mirrors=MIRRORS)
     if results:
         time_now = results[0].get('time_now', None)
@@ -57,7 +55,6 @@ def run():
 
     store_json_data(json_data)
     store_page_data(data, time_now)
-    print "finished", time.time()
 
 
 if __name__ == '__main__':
