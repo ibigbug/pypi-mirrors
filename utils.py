@@ -1,18 +1,25 @@
 import redis
 import socket
-from urlparse import urlparse
 import requests
 import lxml.html
+
+from config import PY2
+from config import load_config
+from services.iploc import get_city
+
+from services.errors import sentry
+
+
+if PY2:
+    from urlparse import urlparse
+else:
+    from urllib.parse import urlparse
 
 try:
     import cPickle as pickle
 except ImportError:
     import pickle
 
-from config import load_config
-from services.iploc import get_city
-
-from services.errors import sentry
 
 CONFIG = load_config()
 
@@ -150,3 +157,29 @@ def location_name(location):
     if country:
         name += country
     return name
+
+
+def cmp_to_key(mycmp):
+    'Convert a cmp= function into a key= function'
+    class K:
+        def __init__(self, obj, *args):
+            self.obj = obj
+
+        def __lt__(self, other):
+            return mycmp(self.obj, other.obj) < 0
+
+        def __gt__(self, other):
+            return mycmp(self.obj, other.obj) > 0
+
+        def __eq__(self, other):
+            return mycmp(self.obj, other.obj) == 0
+
+        def __le__(self, other):
+            return mycmp(self.obj, other.obj) <= 0
+
+        def __ge__(self, other):
+            return mycmp(self.obj, other.obj) >= 0
+
+        def __ne__(self, other):
+            return mycmp(self.obj, other.obj) != 0
+    return K

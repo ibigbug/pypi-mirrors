@@ -1,6 +1,12 @@
+from config import PY2
+
 import json
 import urllib
-import urllib2
+
+if PY2:
+    from urllib2 import urlopen
+else:
+    from urllib.request import urlopen
 
 
 def get_city(apikey, ip):
@@ -12,7 +18,7 @@ def get_city(apikey, ip):
 
     urldata = urllib.urlencode(variables)
     url = "{0}?{1}".format(base_url, urldata)
-    urlobj = urllib2.urlopen(url)
+    urlobj = urlopen(url)
     data = urlobj.read()
     urlobj.close()
     return json.loads(data)
