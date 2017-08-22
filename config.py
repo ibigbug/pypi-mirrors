@@ -3,6 +3,7 @@ import json
 
 # mirrors listed here
 MIRRORS = [
+    ('http', 'mirrors.163.com/pypi'),
     ('https', 'mirror-ord.pypi.io'),
     ('https', 'pypi.doubanio.com'),
     ('https', 'pypi.fcio.net'),
