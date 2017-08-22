@@ -59,7 +59,7 @@
             <thead><tr><th>Mirror</th><th>Location</th><th># of Packages</th><th>Last update</th><th>Age</th><th>Response Time (ms)*</th><th>Status</th></tr></thead>
             <tbody>
             {% for item in data %}
-                <tr><td><a target='_new' href='https://{{item.mirror}}'>{{item.mirror}}</a></td>
+                <tr><td><a target='_new' href='{{item.scheme}}://{{item.mirror}}'>{{item.mirror}}</a></td>
                 <td>{{item.location}}</td>
                 <td>{{item.num_packages}}</td>
                 <td>{{item.last_update}}</td>
