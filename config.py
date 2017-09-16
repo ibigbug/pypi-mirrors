@@ -6,6 +6,7 @@ PY2 = sys.version_info < (3, 0)
 
 # mirrors listed here
 MIRRORS = [
+    ('https', 'pypi.shuosc.org'),
     ('http', 'mirrors.163.com/pypi'),
     ('https', 'mirror-ord.pypi.io'),
     ('https', 'pypi.doubanio.com'),
