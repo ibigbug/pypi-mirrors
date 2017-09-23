@@ -55,7 +55,3 @@ def run():
 
     store_json_data(json_data)
     store_page_data(data, time_now)
-
-
-if __name__ == '__main__':
-    run()

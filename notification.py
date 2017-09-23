@@ -91,7 +91,8 @@ def send_email(email_body, email_to, email_from):
     else:
         email = email_to
 
-    print("email to {0} , bcc: {1}; from {2}".format(email, email_bcc, email_from))
+    print("email to {0} , bcc: {1}; from {2}".format(
+        email, email_bcc, email_from))
     smtp = smtplib.SMTP(email_host, email_port)
     smtp.starttls()
     smtp.login(email_user, email_password)

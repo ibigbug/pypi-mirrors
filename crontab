@@ -1,4 +1,0 @@
-MAILTO=""
-*/6 * * * * . /env.sh; /usr/local/bin/python /src/pypi_mirrors.py >> /var/log/pypi-mirrors.log 2>&1
-24 12 * * * . /env.sh; /usr/local/bin/python /src/daily.py >> /var/log/cron-daily.log 2>&1
-5   * * * * killall -q --older-than 1h '/usr/local/bin/python'
