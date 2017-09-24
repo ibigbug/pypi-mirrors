@@ -34,9 +34,12 @@ def get_connection():
 
 def find_number_of_packages(mirror, scheme='http'):
     """ Find the number of packages in a mirror """
-    html = lxml.html.fromstring(requests.get(
-        "{0}://{1}/simple/".format(scheme, mirror)).content)
-    return len(html.xpath("//a"))
+    try:
+        html = lxml.html.fromstring(requests.get(
+            "{0}://{1}/simple/".format(scheme, mirror), timeout=(1, 10)).content)
+        return len(html.xpath("//a"))
+    except:
+        return 0
 
 
 def ping_ip2loc(ip):

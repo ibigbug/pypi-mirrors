@@ -3,8 +3,8 @@ import logging
 from datetime import datetime
 from apscheduler.schedulers.background import BackgroundScheduler
 
-from .daily import run as run_daily
-from .pypi_mirrors import run as run_sync
+from daily import run as run_daily
+from pypi_mirrors import run as run_sync
 
 logging.getLogger('apscheduler.executors.default').addHandler(
     logging.StreamHandler(stream=sys.stdout))
