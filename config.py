@@ -14,7 +14,7 @@ MIRRORS = [
     ('https', 'pypi.tuna.tsinghua.edu.cn'),
     ('http', 'mirror.picosecond.org/pypi'),
     ('http', 'mirrors.aliyun.com/pypi'),
-    ('http', 'pypi.pubyun.com'),
+    ('https', 'pypi.pubyun.com'),
     ('http', 'mirrors-uk.go-parts.com/python'),
     ('http', 'mirrors-ru.go-parts.com/python'),
     ('http', 'mirrors-au.go-parts.com/python'),
