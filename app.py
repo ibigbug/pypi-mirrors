@@ -2,7 +2,7 @@ import time
 
 from flask import g, request
 from flask import Flask, render_template, Response
-from utils import get_page_data, get_json_data
+from cron.utils import get_page_data, get_json_data
 
 from prometheus_client import make_wsgi_app
 from services.metrics import req_counter, rt_histogram
