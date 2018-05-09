@@ -1,0 +1,91 @@
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: sync-mirror-status
+spec:
+  schedule: "*/5 * * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+          - name: sync-mirror-status
+            command:
+            - python
+            args:
+            - /src/cron/pypi_mirrors.py
+            
+            env:
+            - name: CACHE_REDIS_HOST
+              valueFrom:
+                secretKeyRef:
+                  key: CACHE_REDIS_HOST
+                  name: pypi-mirrors-config
+            - name: CACHE_REDIS_PORT
+              valueFrom:
+                secretKeyRef:
+                  key: CACHE_REDIS_PORT
+                  name: pypi-mirrors-config
+            - name: IPLOC_API_KEY
+              valueFrom:
+                secretKeyRef:
+                  key: IPLOC_API_KEY
+                  name: pypi-mirrors-config
+            - name: TWITTER_CONSUMER_KEY
+              valueFrom:
+                secretKeyRef:
+                  key: TWITTER_CONSUMER_KEY
+                  name: pypi-mirrors-config
+            - name: TWITTER_CONSUMER_SECRET
+              valueFrom:
+                secretKeyRef:
+                  key: TWITTER_CONSUMER_SECRET
+                  name: pypi-mirrors-config
+            - name: TWITTER_ACCESS_KEY
+              valueFrom:
+                secretKeyRef:
+                  key: TWITTER_ACCESS_KEY
+                  name: pypi-mirrors-config
+            - name: TWITTER_ACCESS_SECRET
+              valueFrom:
+                secretKeyRef:
+                  key: TWITTER_ACCESS_SECRET
+                  name: pypi-mirrors-config
+            - name: EMAIL_HOST
+              valueFrom:
+                secretKeyRef:
+                  key: EMAIL_HOST
+                  name: pypi-mirrors-config
+            - name: EMAIL_PORT
+              valueFrom:
+                secretKeyRef:
+                  key: EMAIL_PORT
+                  name: pypi-mirrors-config
+            - name: EMAIL_USER
+              valueFrom:
+                secretKeyRef:
+                  key: EMAIL_USER
+                  name: pypi-mirrors-config
+            - name: EMAIL_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  key: EMAIL_PASSWORD
+                  name: pypi-mirrors-config
+            - name: EMAIL_FROM
+              valueFrom:
+                secretKeyRef:
+                  key: EMAIL_FROM
+                  name: pypi-mirrors-config
+            - name: EMAIL_BCC
+              valueFrom:
+                secretKeyRef:
+                  key: EMAIL_BCC
+                  name: pypi-mirrors-config
+            - name: EMAIL_TO_ADMIN
+              valueFrom:
+                secretKeyRef:
+                  key: EMAIL_TO_ADMIN
+                  name: pypi-mirrors-config
+            image: wtfcontainerregistry.azurecr.io/pypi-mirrors:v1
+            imagePullPolicy: Always
+          restartPolicy: OnFailure
