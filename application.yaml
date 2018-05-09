@@ -1,0 +1,121 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  labels:
+    app: pypi-mirrors-front
+  name: pypi-mirrors-front
+spec:
+  minReadySeconds: 5
+  progressDeadlineSeconds: 600
+  replicas: 3
+  revisionHistoryLimit: 2
+  selector:
+    matchLabels:
+      app: pypi-mirrors-front
+  strategy:
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 1
+    type: RollingUpdate
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: pypi-mirrors-front
+    spec:
+      containers:
+      - args:
+        - -w
+        - wsgi
+        - --chdir=/src/
+        - --chmod-socket=666
+        - --http=0.0.0.0:80
+        - --master
+        env:
+        - name: CACHE_REDIS_HOST
+          valueFrom:
+            secretKeyRef:
+              key: CACHE_REDIS_HOST
+              name: pypi-mirrors-config
+        - name: CACHE_REDIS_PORT
+          valueFrom:
+            secretKeyRef:
+              key: CACHE_REDIS_PORT
+              name: pypi-mirrors-config
+        - name: IPLOC_API_KEY
+          valueFrom:
+            secretKeyRef:
+              key: IPLOC_API_KEY
+              name: pypi-mirrors-config
+        - name: TWITTER_CONSUMER_KEY
+          valueFrom:
+            secretKeyRef:
+              key: TWITTER_CONSUMER_KEY
+              name: pypi-mirrors-config
+        - name: TWITTER_CONSUMER_SECRET
+          valueFrom:
+            secretKeyRef:
+              key: TWITTER_CONSUMER_SECRET
+              name: pypi-mirrors-config
+        - name: TWITTER_ACCESS_KEY
+          valueFrom:
+            secretKeyRef:
+              key: TWITTER_ACCESS_KEY
+              name: pypi-mirrors-config
+        - name: TWITTER_ACCESS_SECRET
+          valueFrom:
+            secretKeyRef:
+              key: TWITTER_ACCESS_SECRET
+              name: pypi-mirrors-config
+        - name: EMAIL_HOST
+          valueFrom:
+            secretKeyRef:
+              key: EMAIL_HOST
+              name: pypi-mirrors-config
+        - name: EMAIL_PORT
+          valueFrom:
+            secretKeyRef:
+              key: EMAIL_PORT
+              name: pypi-mirrors-config
+        - name: EMAIL_USER
+          valueFrom:
+            secretKeyRef:
+              key: EMAIL_USER
+              name: pypi-mirrors-config
+        - name: EMAIL_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              key: EMAIL_PASSWORD
+              name: pypi-mirrors-config
+        - name: EMAIL_FROM
+          valueFrom:
+            secretKeyRef:
+              key: EMAIL_FROM
+              name: pypi-mirrors-config
+        - name: EMAIL_BCC
+          valueFrom:
+            secretKeyRef:
+              key: EMAIL_BCC
+              name: pypi-mirrors-config
+        - name: EMAIL_TO_ADMIN
+          valueFrom:
+            secretKeyRef:
+              key: EMAIL_TO_ADMIN
+              name: pypi-mirrors-config
+        image: wtfcontainerregistry.azurecr.io/pypi-mirrors:v1
+        imagePullPolicy: IfNotPresent
+        name: pypi-mirrors-front
+        ports:
+        - containerPort: 80
+          protocol: TCP
+        resources:
+          limits:
+            cpu: 500m
+          requests:
+            cpu: 250m
+        terminationMessagePath: /dev/termination-log
+        terminationMessagePolicy: File
+      dnsPolicy: ClusterFirst
+      restartPolicy: Always
+      securityContext: {}
+      terminationGracePeriodSeconds: 30
