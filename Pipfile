@@ -1,0 +1,21 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[dev-packages]
+
+[packages]
+redis = "*"
+hiredis = "*"
+requests = "*"
+lxml = "*"
+tweepy = "*"
+raven = "==6.1.0"
+gevent = "*"
+Flask = "*"
+uWSGI = "*"
+prometheus_client = "==0.0.20"
+
+[requires]
+python_version = "2.7"
